@@ -13,8 +13,8 @@
 
       .col-md-3 img{
 
-      width:255px;
-      height:355px;
+      width:227px;
+      max-height:242px;
       }
 
       body .carousel-indicator li{
@@ -47,7 +47,7 @@
 
     <!--   Slideshow starts here-->
     {% for product, range, nSlides in allProds %}
-    <h1>{{product.0.category}}</h1>
+    <h5 class="my-4">Flash sale on {{product.0.category}} - Recommended Items</h5>
   <div id="demo{{forloop.counter}}" class="carousel slide my-3" data-ride="carousel">
    <ul class="carousel-indicators">
     <li data-target="#demo{{forloop.counter}}" data-slide-to="0" class="active"></li>
