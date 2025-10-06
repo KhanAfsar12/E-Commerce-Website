@@ -7,60 +7,576 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-      <title>{% block title%} {% endblock %}</title>
-      <style>
-        {% block css %} {% endblock %}
+    <title>{% block title%} {% endblock %}</title>
+    <style>
+      :root {
+        --primary: #4361ee;
+        --primary-dark: #3a56d4;
+        --secondary: #7209b7;
+        --accent: #4cc9f0;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --gray: #6c757d;
+        --light-gray: #e9ecef;
+        --border: #e0e0e0;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --radius: 8px;
+        --transition: all 0.3s ease;
+      }
+      
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+        color: var(--dark);
+      }
+      
+      /* Custom Navbar Styles */
+      .navbar {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+        box-shadow: var(--shadow);
+        padding: 0.8rem 1rem;
+        transition: var(--transition);
+      }
+      
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: white !important;
+      }
+      
+      .navbar-brand i {
+        color: var(--accent);
+      }
+      
+      .navbar-nav .nav-link {
+        color: rgba(255, 255, 255, 0.85) !important;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        margin: 0 0.2rem;
+        border-radius: var(--radius);
+        transition: var(--transition);
+        position: relative;
+      }
+      
+      .navbar-nav .nav-link:hover {
+        color: white !important;
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+      }
+      
+      .navbar-nav .nav-link.active {
+        color: white !important;
+        background-color: rgba(255, 255, 255, 0.15);
+      }
+      
+      .navbar-nav .nav-link.active:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 15%;
+        width: 70%;
+        height: 2px;
+        background-color: var(--accent);
+      }
+      
+      .search-form {
+        position: relative;
+        margin-right: 1rem;
+      }
+      
+      .search-form .form-control {
+        border-radius: 50px;
+        padding: 0.5rem 1.5rem;
+        border: none;
+        width: 280px;
+        background-color: rgba(255, 255, 255, 0.9);
+        transition: var(--transition);
+      }
+      
+      .search-form .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+        background-color: white;
+        width: 320px;
+      }
+      
+      .search-btn {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--primary);
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        transition: var(--transition);
+      }
+      
+      .search-btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-50%) scale(1.05);
+      }
+      
+      .cart-btn {
+        background: white;
+        color: var(--primary);
+        border: none;
+        border-radius: 50px;
+        padding: 0.5rem 1.2rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: var(--transition);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      
+      .cart-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        color: var(--primary-dark);
+      }
+      
+      .cart-count {
+        background: var(--accent);
+        color: white;
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+      
+      /* User dropdown */
+      .user-dropdown .dropdown-toggle {
+        background: transparent;
+        border: none;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.8rem;
+        border-radius: var(--radius);
+        transition: var(--transition);
+      }
+      
+      .user-dropdown .dropdown-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      .user-dropdown .dropdown-menu {
+        border: none;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 0.5rem 0;
+        margin-top: 0.5rem;
+      }
+      
+      .user-dropdown .dropdown-item {
+        padding: 0.6rem 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        transition: var(--transition);
+      }
+      
+      .user-dropdown .dropdown-item:hover {
+        background-color: rgba(67, 97, 238, 0.1);
+        color: var(--primary);
+      }
+      
+      .user-dropdown .dropdown-divider {
+        margin: 0.3rem 0;
+      }
+      
+      /* Mobile menu improvements */
+      .navbar-toggler {
+        border: none;
+        padding: 0.25rem 0.5rem;
+      }
+      
+      .navbar-toggler:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+      }
+      
+      .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.9)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+      }
+      
+      /* Notification badge */
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ff4757;
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      /* Custom popover for cart */
+      .popover {
+        border: none;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        max-width: 350px;
+      }
+      
+      .popover-header {
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: var(--radius) var(--radius) 0 0;
+        font-weight: 600;
+      }
+      
+      .popover-body {
+        padding: 1rem;
+      }
+      
+      .cart-item {
+        display: flex;
+        align-items: center;
+        padding: 0.7rem 0;
+        border-bottom: 1px solid var(--border);
+      }
+      
+      .cart-item:last-child {
+        border-bottom: none;
+      }
+      
+      .cart-item-img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 6px;
+        margin-right: 1rem;
+      }
+      
+      .cart-item-details {
+        flex-grow: 1;
+      }
+      
+      .cart-item-name {
+        font-weight: 600;
+        margin-bottom: 0.2rem;
+        font-size: 0.9rem;
+      }
+      
+      .cart-item-price {
+        color: var(--primary);
+        font-weight: 600;
+      }
+      
+      .cart-total {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+      
+      .cart-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      
+      .cart-actions .btn {
+        flex: 1;
+        border-radius: 50px;
+        padding: 0.5rem;
+        font-weight: 600;
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 991px) {
+        .navbar-nav {
+          padding: 1rem 0;
+        }
+        
+        .navbar-nav .nav-link {
+          margin: 0.2rem 0;
+        }
+        
+        .search-form {
+          margin: 1rem 0;
+          width: 100%;
+        }
+        
+        .search-form .form-control {
+          width: 100%;
+        }
+        
+        .search-form .form-control:focus {
+          width: 100%;
+        }
+        
+        .navbar-collapse {
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          margin-top: 0.5rem;
+        }
+        
+        .user-dropdown, .cart-btn-wrapper {
+          margin: 0.5rem 0;
+        }
+      }
+      
+      @media (max-width: 576px) {
+        .navbar-brand {
+          font-size: 1.3rem;
+        }
+        
+        .cart-btn {
+          padding: 0.4rem 1rem;
+          font-size: 0.9rem;
+        }
+      }
+      
+      /* Animation for navbar on scroll */
+      .navbar-scrolled {
+        padding: 0.5rem 1rem;
+        background: var(--primary) !important;
+      }
+      
+      /* Custom block styles */
+      {% block css %} {% endblock %}
     </style>
   </head>
 
   <body>
-   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="/shop">My Awesmoe Cart</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+   <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="/shop">
+          <i class="fas fa-shopping-bag"></i>
+          MyAwesomeCart
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/shop">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/shop/about">About Us</a>
-      </li>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/shop">
+                <i class="fas fa-home"></i>
+                Home
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/shop/about">
+                <i class="fas fa-info-circle"></i>
+                About Us
+              </a>
+            </li>
 
-      <li class="nav-item">
-        <a class="nav-link" href="/shop/tracker">Tracker</a>
-      </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/shop/tracker">
+                <i class="fas fa-shipping-fast"></i>
+                Order Tracker
+              </a>
+            </li>
 
-      <li class="nav-item">
-        <a class="nav-link" href="/blog">Blog</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/shop/contact">Contact Us</a>
-      </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/blog">
+                <i class="fas fa-blog"></i>
+                Blog
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/shop/contact">
+                <i class="fas fa-envelope"></i>
+                Contact Us
+              </a>
+            </li>
+          </ul>
+          
+          <form method="get" action="/shop/search/" class="search-form">
+            <input class="form-control" type="search" placeholder="Search products..." aria-label="Search" name="search" id="search">
+            <button class="search-btn" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+          </form>
+          
+          <div class="user-dropdown dropdown ml-2">
+            <a class="dropdown-toggle" href="#" role="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-user-circle"></i>
+              Account
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+              <a class="dropdown-item" href="/shop/profile">
+                <i class="fas fa-user"></i>
+                My Profile
+              </a>
+              <a class="dropdown-item" href="/shop/orders">
+                <i class="fas fa-box"></i>
+                My Orders
+              </a>
+              <a class="dropdown-item" href="/shop/wishlist">
+                <i class="fas fa-heart"></i>
+                Wishlist
+                <span class="badge badge-pill badge-primary ml-2">3</span>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="/shop/login">
+                <i class="fas fa-sign-in-alt"></i>
+                Login
+              </a>
+            </div>
+          </div>
+          
+          <div class="cart-btn-wrapper ml-2">
+            <button type="button" class="cart-btn" id="popcart"
+                    data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"
+                    data-content="Loading cart...">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="d-none d-md-inline">Cart</span>
+              <span class="cart-count" id="cart">0</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+    {% block body%} {% endblock %}
 
-
-    </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-    <button type="button" class="btn btn-secondary mx-2" id="popcart"
-            data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"
-            data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
-  Cart(<span id="cart">0</span>)
-    </button>
-  </div>
-</nav>
-  {% block body%} {% endblock %}
-
-  <!-- Optional JavaScript -->
+    <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-     {% block js%} {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    
+    <script>
+      // Navbar scroll effect
+      $(window).scroll(function() {
+        if ($(window).scrollTop() > 50) {
+          $('.navbar').addClass('navbar-scrolled');
+        } else {
+          $('.navbar').removeClass('navbar-scrolled');
+        }
+      });
+      
+      // Initialize cart popover
+      $('#popcart').popover({
+        trigger: 'click',
+        html: true,
+        content: function() {
+          return generateCartContent();
+        }
+      });
+      
+      // Function to generate cart content
+      function generateCartContent() {
+        let cart = JSON.parse(localStorage.getItem('cart') || '{}');
+        let totalItems = 0;
+        let totalPrice = 0;
+        let cartItems = '';
+        
+        if (Object.keys(cart).length === 0) {
+          cartItems = '<p class="text-center text-muted my-3">Your cart is empty</p>';
+        } else {
+          for (let item in cart) {
+            const itemData = cart[item];
+            totalItems += itemData[0];
+            totalPrice += itemData[0] * itemData[2];
+            
+            cartItems += `
+              <div class="cart-item">
+                <img src="/media/${itemData[3] || 'default-product.jpg'}" class="cart-item-img" alt="${itemData[1]}">
+                <div class="cart-item-details">
+                  <div class="cart-item-name">${itemData[1]}</div>
+                  <div class="d-flex justify-content-between">
+                    <span class="cart-item-price">$${itemData[2]}</span>
+                    <span class="text-muted">Qty: ${itemData[0]}</span>
+                  </div>
+                </div>
+              </div>
+            `;
+          }
+        }
+        
+        return `
+          <div class="cart-popover">
+            <div class="cart-items">
+              ${cartItems}
+            </div>
+            <div class="cart-total">
+              <span>Total:</span>
+              <span>$${totalPrice.toFixed(2)}</span>
+            </div>
+            <div class="cart-actions">
+              <a href="/shop/checkout" class="btn btn-primary">Checkout</a>
+              <a href="/shop/cart" class="btn btn-outline-primary">View Cart</a>
+            </div>
+          </div>
+        `;
+      }
+      
+      // Update cart count
+      function updateCartCount() {
+        let cart = JSON.parse(localStorage.getItem('cart') || '{}');
+        let totalItems = 0;
+        
+        for (let item in cart) {
+          totalItems += cart[item][0];
+        }
+        
+        $('#cart').text(totalItems);
+      }
+      
+      // Initialize cart count on page load
+      $(document).ready(function() {
+        updateCartCount();
+        
+        // Update active nav link based on current page
+        const currentPath = window.location.pathname;
+        $('.navbar-nav .nav-link').each(function() {
+          const linkPath = $(this).attr('href');
+          if (currentPath === linkPath || (currentPath.startsWith(linkPath) && linkPath !== '/shop')) {
+            $(this).addClass('active');
+          } else {
+            $(this).removeClass('active');
+          }
+        });
+        
+        // Set home as active if no other matches
+        if (currentPath === '/' || currentPath === '/shop') {
+          $('.navbar-nav .nav-link[href="/shop"]').addClass('active');
+        }
+      });
+      
+      // Search form enhancement
+      $('.search-form').on('submit', function(e) {
+        const searchTerm = $('#search').val().trim();
+        if (searchTerm === '') {
+          e.preventDefault();
+          $('#search').focus();
+        }
+      });
+    </script>
+    
+    {% block js%} {% endblock %}
   </body>
 </html>
